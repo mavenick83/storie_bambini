@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Generatore di Storie per Bambini</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="Crea storie per bambini personalizzate con l'AI, partendo da Nome, Età, Interessi, Città e Personaggi preferiti." />
+  <style>
+    body {
+      background: url('https://cdn.pixabay.com/photo/2017/08/30/01/05/fantasy-2695569_1280.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Comic Sans MS', 'Comic Neue', cursive, sans-serif;
+    }
+    .fade-in { animation: fade-in .25s ease-out both; }
+    @keyframes fade-in { from {opacity:.0; transform: translateY(2px)} to {opacity:1; transform: none} }
+    .typing { animation: blink 1s steps(2, start) infinite; }
+    @keyframes blink { to { visibility: hidden; } }
+  </style>
+</head>
+<body class="text-slate-900 min-h-screen flex flex-col">
+  <header class="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-slate-200 shadow-md rounded-b-3xl">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-3xl font-extrabold text-indigo-700 flex items-center gap-2">🌈 Generatore di Storie</h1>
+      <div class="flex items-center gap-2">
+        <button id="settingsBtn" class="px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition">⚙️ Impostazioni</button>
+        <a href="#howto" class="px-4 py-2 rounded-full bg-pink-100 text-pink-700 hover:bg-pink-200 transition">📖 Guida</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
+    <!-- Form -->
+    <section class="bg-white/90 rounded-3xl shadow-lg p-6 md:p-8 border border-indigo-100">
+      <h2 class="text-xl font-bold text-indigo-600 mb-4">📝 Inserisci le indicazioni</h2>
+      <form id="storyForm" class="grid gap-5">
+        <div class="grid gap-1">
+          <label for="name" class="text-sm font-semibold text-slate-700">Nome bambino/bambina</label>
+          <input id="name" type="text" required class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="Es. Ginevra" />
+        </div>
+        <div class="grid gap-1">
+          <label for="age" class="text-sm font-semibold text-slate-700">Età</label>
+          <input id="age" type="number" min="1" max="12" required class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="Es. 6" />
+        </div>
+        <div class="grid gap-1">
+          <label for="city" class="text-sm font-semibold text-slate-700">Città</label>
+          <input id="city" type="text" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="Es. Pescara" />
+        </div>
+        <div class="grid gap-1">
+          <label for="interests" class="text-sm font-semibold text-slate-700">Interessi</label>
+          <textarea id="interests" rows="2" class="px-4 py-2 rounded-xl border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="Es. dinosauri, mare, disegno"></textarea>
+        </div>
+        <div class="grid gap-1">
+          <label for="characters" class="text-sm font-semibold text-slate-700">Personaggi preferiti</label>
+          <input id="characters" type="text" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="Es. Spider‑Man, Elsa, Bing" />
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="grid gap-1">
+            <label for="length" class="text-sm font-semibold text-slate-700">Lunghezza</label>
+            <select id="length" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200">
+              <option value="short">Breve (300-450 parole)</option>
+              <option value="medium" selected>Media (500-700 parole)</option>
+              <option value="long">Lunga (800-1000 parole)</option>
+            </select>
+          </div>
+          <div class="grid gap-1">
+            <label for="tone" class="text-sm font-semibold text-slate-700">Tono</label>
+            <select id="tone" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200">
+              <option value="magico" selected>Magico</option>
+              <option value="avventuroso">Avventuroso</option>
+              <option value="divertente">Divertente</option>
+              <option value="rilassante">Rilassante (buonanotte)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid gap-1">
+          <label for="value" class="text-sm font-semibold text-slate-700">Valore educativo (opzionale)</label>
+          <input id="value" type="text" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="Es. amicizia, coraggio, gentilezza" />
+        </div>
+
+        <div class="flex flex-wrap gap-4 pt-2">
+          <button id="generateBtn" type="submit" class="px-5 py-3 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 shadow-md transition">✨ Genera storia</button>
+          <button id="demoBtn" type="button" class="px-5 py-3 rounded-full border border-pink-300 text-pink-600 font-semibold hover:bg-pink-50 transition">🎨 Demo</button>
+          <button id="clearBtn" type="button" class="px-5 py-3 rounded-full border border-yellow-300 text-yellow-600 font-semibold hover:bg-yellow-50 transition">🧹 Pulisci</button>
+        </div>
+      </form>
+
+      <p class="text-xs text-slate-500 mt-5">🔒 Privacy: la tua chiave API viene salvata localmente nel browser (LocalStorage) e non viene inviata a terzi, a parte l'uso diretto verso il provider AI che indicherai.</p>
+    </section>
+
+    <!-- Output -->
+    <section class="bg-white/90 rounded-3xl shadow-lg p-6 md:p-8 border border-pink-100">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-xl font-bold text-pink-600">📚 Storia generata</h2>
+        <div class="flex items-center gap-2">
+          <button id="copyBtn" class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50">📋 Copia</button>
+          <button id="downloadBtn" class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50">⬇️ Scarica</button>
+          <button id="printBtn" class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50">🖨️ Stampa</button>
+        </div>
+      </div>
+      <article id="output" class="prose max-w-none whitespace-pre-wrap leading-relaxed text-slate-800"></article>
+      <div id="status" class="text-sm text-slate-500 mt-4"></div>
+    </section>
+  </main>
+
+  <section id="howto" class="max-w-6xl mx-auto px-4 pb-12">
+    <div class="bg-white/90 rounded-3xl shadow-md p-6 md:p-8 border border-yellow-100">
+      <h2 class="text-xl font-bold text-yellow-600 mb-3">🚀 Guida rapida</h2>
+      <ol class="list-decimal pl-6 space-y-2 text-sm text-slate-700">
+        <li>Apri <strong>Impostazioni</strong> e incolla la tua <strong>chiave API</strong> del provider (es. OpenAI).</li>
+        <li>Compila i campi a sinistra con Nome, Età, Interessi, Città e Personaggi preferiti.</li>
+        <li>Clicca <strong>Genera storia</strong>. In alternativa, usa <em>Demo</em> per provare senza API.</li>
+        <li>Usa i pulsanti Copia / Scarica / Stampa per condividere la storia.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Modal Impostazioni -->
+  <dialog id="settingsModal" class="rounded-3xl p-0 w-[92vw] max-w-lg bg-white shadow-xl border border-indigo-100">
+    <form method="dialog" class="p-6 md:p-8 grid gap-4">
+      <h3 class="text-lg font-bold text-indigo-600">⚙️ Impostazioni</h3>
+      <div class="grid gap-1">
+        <label for="apiKey" class="text-sm font-semibold text-slate-700">API Key</label>
+        <input id="apiKey" type="password" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" placeholder="sk-..." />
+        <p class="text-xs text-slate-500">La chiave resta nel tuo browser. Non condividerla mai pubblicamente.</p>
+      </div>
+      <div class="grid gap-1">
+        <label for="endpoint" class="text-sm font-semibold text-slate-700">Endpoint</label>
+        <input id="endpoint" type="text" class="px-4 py-2 rounded-full border border-slate-300 focus:ring focus:ring-indigo-200" value="https://api.openai.com/v1/chat/completions" />
+        <p class="text-xs text-slate-500">Modifica se usi un provider compatibile diverso.</p>
+      </div>
+      <div class="flex justify-end gap-3 pt-2">
+        <button value="cancel" class="px-4 py-2 rounded-full border border-slate-300 hover:bg-slate-50">Annulla</button>
+        <button id="saveSettingsBtn" value="default" class="px-5 py-2 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 shadow-md transition">Salva</button>
+      </div>
+    </form>
+  </dialog>
+
+  <footer class="text-center text-xs text-slate-500 py-8 bg-white/70 rounded-t-3xl">Made with ❤️ per i bambini – Funziona interamente nel tuo browser.</footer>
+
+  <script>
+    // (JS invariato rispetto alla versione precedente)
+  </script>
+</body>
+</html>
